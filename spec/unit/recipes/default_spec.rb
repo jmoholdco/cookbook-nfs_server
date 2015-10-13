@@ -13,14 +13,18 @@ RSpec.describe 'nfs_server::default' do
     include_examples 'converges successfully'
   end
   supported_platforms = {
-    'ubuntu' => %w(12.04 14.04 15.10),
-    'centos' => %w(7.0 7.1.1503)
+    'centos' => %w(7.0 7.1.1503),
+    'fedora' => %w(20 21)
   }
 
   supported_platforms.each do |platform, versions|
     versions.each do |version|
       let(:opts) { { platform: platform, version: version } }
       include_examples 'converges successfully'
+      subject { chef_run }
+      it { is_expected.to include_recipe 'nfs::server4' }
+      it { is_expected.to include_recipe 'firewalld' }
+      it { is_expected.to create_nfs_export '/srv' }
     end
   end
 end
