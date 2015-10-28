@@ -4,6 +4,8 @@
 #
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
+include_recipe 'firewalld'
+
 yum_package 'nfs-utils' do
   action :install
 end
